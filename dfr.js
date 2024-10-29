@@ -102,6 +102,7 @@ function createSlice(dataframe, columnIndex, pattern, exportColumns = []) {
     return pattern === '*' ? true : value === pattern;
   });
   const result = filteredRows.map(row => exportColumns.length === 0 ? row : exportColumns.map(index => row[index]));
+  
   return result;
 }
 
