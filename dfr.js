@@ -26,7 +26,7 @@ function dataDimensions(dataframe) {
 }
 
 function findTotal(dataset) {
-  if (!Array.isArray(dataset) || validNumber.length === 0) {
+  if (!Array.isArray(dataset)) {
     return 0;
   }
   const validNumbers = dataset.filter(validNumber);
@@ -35,20 +35,16 @@ function findTotal(dataset) {
 
 function calculateMean(dataset) {
   // Check if dataset is an array and not empty
-  if (!Array.isArray(dataset)) return 0; // Return false for invalid input
+  if (!Array.isArray(dataset)) {
+    return 0;
+  }
   // Flatten the dataset and filter out valid numbers
   const validNumbers = dataset.filter(validNumber).map(value =>
     typeof value === 'string' ? parseFloat(value) : value
   );
-  // If no valid numbers are found, return false
-  if (validNumbers.length === 0) {
-    return 0;
-  }
   // Calculate the sum of valid numbers
   let sum = validNumbers.reduce((acc, value) => acc + value, 0);
-  // Calculate mean
-  const mean = sum / validNumbers.length;
-  return mean;
+  return validNumbers.length ? sum / validNumbers.length : 0;
 }
 
 function calculateMedian(dataset) {
@@ -59,10 +55,6 @@ function calculateMedian(dataset) {
   const validNumbers = dataset.filter(validNumber).map(value =>
     typeof value === 'string' ? parseFloat(value) : value
   );
-  // If no valid numbers are found, return 0
-  if (validNumbers.length === 0) {
-    return 0;
-  }
   // Sort the valid numbers
   validNumbers.sort((a, b) => a - b);
   const length = validNumbers.length;
@@ -72,37 +64,31 @@ function calculateMedian(dataset) {
 }
 
 function convertToNumber(data, col) {
-  // Check if the data is a valid array and the column index is valid
-  if (!Array.isArray(data)) return 0; // Return 0 for invalid input
-  let count = 0; // Counter for conversions
-  // Iterate over each row in the data, starting from index 1 to skip headers
+  if (!Array.isArray(data)) {
+    return 0;
+  } 
+  let count = 0; 
   for (let i = 1; i < data.length; i++) {
     const value = data[i][col];
-    // Check if the value is a string and can be converted to a number
     data [i][col] = (typeof value === 'string' && !isNaN(parseFloat(value))) ? (count++, parseFloat(value)) : value;
   }
   return count;
 }
 
-
-
-
 function flatten(dataframe) {
   const flattened = dataframe.map(row => row[0]);
   return flattened;
-  // return a dataset (a flattened dataframe)
 }
 
 function loadCSV(csvFile, ignoreRows, ignoreCols) {
   if (!fs.existsSync(csvFile)) {
     return [[], -1, -1];
-  };
+  }
   const fileData = fs.readFileSync(csvFile, "utf-8");
   const rows = fileData.split(/\n/).map(rows => rows.split(','));
   const totalRows = rows.length;
   const totalColumns = rows[0].length;
   const filteredRows = rows.filter((_, index) => !ignoreRows.includes(index));
-  // Process each row to exclude the ignored columns
   const dataframe = filteredRows.map(row => row.filter((_, index) => !ignoreCols.includes(index)));
   return [dataframe, totalRows, totalColumns];
 }
@@ -111,16 +97,12 @@ function createSlice(dataframe, columnIndex, pattern, exportColumns = []) {
   if (columnIndex < 0 || columnIndex >= dataframe[0].length) {
     throw new Error('Invalid column index.');
   }
-  // Filter rows based on the pattern
   const filteredRows = dataframe.filter(row => {
     const value = row[columnIndex];
     return pattern === '*' ? true : value === pattern;
   });
-  // Map the filtered rows to include only the specified columns
-  const result = filteredRows.map(row => 
-    exportColumns.length === 0 ? row : exportColumns.map(index => row[index])
-  );
-  return result; // Return the resulting sliced dataframe 
+  const result = filteredRows.map(row => exportColumns.length === 0 ? row : exportColumns.map(index => row[index]));
+  return result;
 }
 
 
