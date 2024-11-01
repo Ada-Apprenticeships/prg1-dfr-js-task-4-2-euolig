@@ -16,7 +16,7 @@ function validNumber(value) {
   }
 }
 // Function to determine the dimensions of an array
-// Checks whether an input is a 1D or 2D array and returns its dimensions.
+// Checks whether an input is a 1D or 2D array and returns its dimensions
 function dataDimensions(dataframe) {
   return !Array.isArray(dataframe)
     ? [-1, -1] // Not an array
@@ -35,9 +35,9 @@ function findTotal(dataset) {
   const validNumbers = dataset.filter(validNumber);
   return validNumbers.reduce((total, value) => total + Number(value), 0);
 }
-// Function to calculate the mean (average) of valid numbers in an array.
-// Filters and converts valid numbers then calculates the mean.
-// Returns the mean as a number, or 0 if no valid numbers are found.
+// Function to calculate the mean (average) of valid numbers in an array
+// Filters and converts valid numbers then calculates the mean
+// Returns the mean as a number, or 0 if no valid numbers are found
 function calculateMean(dataset) {
   // Check if dataset is an array and not empty
   if (!Array.isArray(dataset)) {
@@ -52,8 +52,8 @@ function calculateMean(dataset) {
   return validNumbers.length ? sum / validNumbers.length : 0;
 }
 // Function to calculate the median of valid numbers in an array
-// Finds the middle value in a sorted list of valid numbers from an array.
-// Returns the median value as a number, or 0 if no valid numbers are present.
+// Finds the middle value in a sorted list of valid numbers from an array
+// Returns the median value as a number, or 0 if no valid numbers are present
 function calculateMedian(dataset) {
   if (!Array.isArray(dataset) || dataset.length === 0) {
     return 0;
@@ -68,7 +68,7 @@ function calculateMedian(dataset) {
   return length % 2 === 0 ? (validNumbers[middle - 1] + validNumbers[middle]) / 2 : validNumbers[middle];
 }
 // Function to convert valid numeric strings to numbers in a specified column of a 2D array
-// Returns the count of successful conversions.
+// Returns the count of successful conversions
 function convertToNumber(data, col) {
   if (!Array.isArray(data)) {
     return 0;
@@ -86,7 +86,7 @@ function flatten(dataframe) {
   return flattened;
 }
 // Function to load a CSV file into a 2D array, with optional row and column exclusions
-// Returns the processed 2D array and the original dimensions of the CSV.
+// Returns the processed 2D array and the original dimensions of the CSV
 function loadCSV(csvFile, ignoreRows, ignoreCols) {
   if (!fs.existsSync(csvFile)) {
     return [[], -1, -1];
@@ -100,9 +100,9 @@ function loadCSV(csvFile, ignoreRows, ignoreCols) {
   return [dataframe, totalRows, totalColumns];
 }
 // Function to create a subset of a dataframe based on a specified pattern in a column
-// Extracts rows from a 2D array where a specific column matches a given pattern.
-// Allows exporting specific columns from the matched rows.
-// Returns the filtered and possibly reduced subset of the dataframe.
+// Extracts rows from a 2D array where a specific column matches a given pattern
+// Allows exporting specific columns from the matched rows
+// Returns the filtered and possibly reduced subset of the dataframe
 function createSlice(dataframe, columnIndex, pattern, exportColumns = []) {
   if (columnIndex < 0 || columnIndex >= dataframe[0].length) {
     throw new Error('Invalid column index.');
